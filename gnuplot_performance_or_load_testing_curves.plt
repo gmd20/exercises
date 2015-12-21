@@ -18,6 +18,16 @@ set grid
 # 设置 时间的显示格式
 #set format x "%y/%m/%d"  
 
+#%x 轴范围为-10 到 10，
+# set xrange [0:50]
+# set yrange [0:50]
+
+# %x 轴的主刻度的宽度为 10
+# set xtics 10
+# %x 轴上每个主刻度中画 2 个分刻度
+# set mxtics 2
+
+
 
 
 set title 'load testing'
