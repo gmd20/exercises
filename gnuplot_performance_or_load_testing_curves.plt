@@ -17,6 +17,8 @@ set grid
 
 # 设置 时间的显示格式
 #set format x "%y/%m/%d"  
+#set format x "%H%M%S"
+
 
 #%x 轴范围为-10 到 10，
 # set xrange [0:50]
@@ -34,12 +36,12 @@ set title 'load testing'
 
 set ylabel  'response time(ms)'
 
-set xlabel  'req/s'
+set xlabel  'time'
 
 set format  y "%.0f"
 
-plot   'HTTP.txt' with lines title "HTTP request", 'SMPP.txt' with lines title "SMPP"
-
-
+#plot   'HTTP.txt' with lines title "HTTP request", 'SMPP.txt' with lines title "SMPP"
+# 好像一定要用using 1:2 指定使用文件里面第一个第二列数据才行
+plot  'avg_time.txt' using 1:2 title "avg time" with lines, 'max_time.txt' using 1:2 title "max time" with lines
 
 
