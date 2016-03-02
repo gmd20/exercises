@@ -15,9 +15,22 @@ parse_yaml() {
    }'
 }
 
+# eval $(parse_yaml example_config.yml "config_")
+# access yaml content
+#echo $config_development_database
 
-#eval $(parse_yaml example_config.yml "config_")
-eval $(parse_yaml example_config.yml "")
+YAML_CONFIG_FILE="example_config.yml"
+if [[ -n $1 ]]; then
+	if [[ $1 == *.yml ]] && [[ -e $1 ]]; then
+		YAML_CONFIG_FILE=$1
+	else
+		echo "$1 file doesn't exit"
+	fi
+fi
+echo "generate example_config.xml from template and $YAML_CONFIG_FILE."
+
+eval $(parse_yaml "$YAML_CONFIG_FILE" "")
+
 
 # access yaml content
 #echo $config_development_database
