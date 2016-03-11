@@ -33,10 +33,43 @@ echo "generate example_config.xml from template and $YAML_CONFIG_FILE."
 eval $(parse_yaml "$YAML_CONFIG_FILE" "")
 
 
-# access yaml content
-#echo $config_development_database
+
+
+
+
+
+
+ADDRESS_MAP=""
+ADDR_COMMENT="\\
+                            <!--\\
+                            @)\\
+                            -->"
+
+# split string into array, delimiter is , and space
+IFS=', ' read -r -a ADDRESS_ARRAY <<< "$CONNECTION_IP"
+
+# access string array
+for index in "${!ADDRESS_ARRAY[@]}"
+do
+	address_map_id=$(($index +1))
+	gt_number="${ADDRESS_ARRAY[index]}"
+
+  # when sed replacement regexp includes a newline, be sure to precede the
+  # desired \, &, or newline in the replacement with a \.
+	AddressMap="\\
+                        <AddressMap id=\"${address_map_id}\">${ADDR_COMMENT}\\
+                          <OutAddr ip=\"${AS_local_pc}\"\/>\\
+                        <\/AddressMap>"
+	ADDRESS_MAP+="$AddressMap"
+	OUR_ADDR_COMMENT=""
+done
+#echo "${ADDRESS_MAP}"
+
+
+
 
 sed \
+  -e "s|{{ADDRESS_MAP}}|$ADDRESS_MAP|g" \
   -e "s/{{development_database}}/$development_database/g" \
   -e "s/{{development_text1}}/$development_text1/g" \
   < example_config.xml.template \
