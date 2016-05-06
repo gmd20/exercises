@@ -1,0 +1,43 @@
+# test completion
+
+function_exists()
+{
+	declare -F $1 > /dev/null
+	return $?
+}
+
+_smsc_ctl_auto_complete() {
+	local cur cmds
+
+	COMPREPLY=()
+	local cur prev cmds
+
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+	prev=${COMP_WORDS[COMP_CWORD-1]}
+
+	cmds="compile status start stop restart clean"
+
+	if [ $COMP_CWORD -eq 1 ]; then
+		COMPREPLY=( $( compgen -W "$cmds" -- "$cur" ) )
+	elif [ $COMP_CWORD -eq 2 ]; then
+		test_ctl=${COMP_WORDS[0]}
+		conf_files=`$test_ctl ls`
+		case "$prev" in
+			"start")
+				COMPREPLY=( $( compgen -W "all $conf_files" -- "$cur" ) )
+				;;
+			"stop")
+				COMPREPLY=( $( compgen -W "all $conf_files" -- "$cur" ) )
+				;;
+			*)
+				COMPREPLY=( $( compgen -W "all $conf_files" -- "$cur" ) )
+				;;
+		esac
+
+	fi
+
+}
+
+complete -r ./test_ctl > /dev/null 2>&1
+complete -F _test_ctl_auto_complete test_ctl
