@@ -42,6 +42,18 @@ set format  y "%.0f"
 
 #plot   'HTTP.txt' with lines title "HTTP request", 'SMPP.txt' with lines title "SMPP"
 # 好像一定要用using 1:2 指定使用文件里面第一个第二列数据才行
-plot  'avg_time.txt' using 1:2 title "avg time" with lines, 'max_time.txt' using 1:2 title "max time" with lines
+#plot  'avg_time.txt' using 1:2 title "avg time" with lines, 'max_time.txt' using 1:2 title "max time" with lines
 
+plot 'connections-1 sessions-1 updates-100.txt' with linespoints title 'connections=1 sessions=1 updates=100' ,  \
+     'connections-1 sessions-400 updates-100.txt' with linespoints  title 'connections=1 sessions=400 updates=100', \
+     'connections-1 sessions-1600 updates-100.txt' with linespoints  title 'connections=1 sessions=1600 updates=100', \
+     'connections-1 sessions-3200 updates-100.txt' with linespoints  title 'connections=1 sessions=3200 updates=100', \
+     'connections-4 sessions-1 updates-100.txt' with linespoints title 'connections=4 sessions=1 updates=100', \
+     'connections-4 sessions-400 updates-100.txt' with linespoints  title 'connections=4 sessions=400 updates=100', \
+     'connections-4 sessions-1600 updates-100.txt' with linespoints  title 'connections=4 sessions=1600 updates=100', \
+     'connections-4 sessions-3200 updates-100.txt.txt' with linespoints  title 'connections=4 sessions=3200 updates=100', \
+     'connections-32 sessions-1 updates-100.txt' with linespoints title 'connections=32 sessions=1 updates=100', \
+     'connections-32 sessions-400 updates-100.txt' with linespoints  title 'connections=32 sessions=400 updates=100', \
+     'connections-32 sessions-1600 updates-100.txt' with linespoints  title 'connections=32 sessions=1600 updates=100', \
+     'connections-32 sessions-3200 updates-100.txt' with linespoints  title 'connections=32 sessions=3200 updates=100'
 
