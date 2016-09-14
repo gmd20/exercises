@@ -96,12 +96,11 @@ set encoding=utf-8 " vim内部存储使用的编码格式
 " 避免设置encoding=utf-8 后菜单乱码
 " 避免设置encoding=utf-8 后vim 提示信息乱码
 if has("win32")
-  set langmenu=zh_CN.UTF-8
   let $LANG='zh_CN.UTF-8'
   language message zh_CN.UTF-8
   set langmenu=zh_CN.UTF-8 " 这个选项需要在菜单加载之前设置，不然要像下面这样重新加载，但可能导致自定义菜单失效
   source $VIMRUNTIME/delmenu.vim
-	source $VIMRUNTIME/menu.vim
+  source $VIMRUNTIME/menu.vim
 endif
 
 " set nobomb       可以删除UTF-8 文件开始的几个BOM 文件编码标识的字节。
