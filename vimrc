@@ -1,5 +1,40 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+set diffopt=iwhite
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if has("win32")
+    let cmd = 'C:/Git/usr/bin/diff.exe'
+  else
+    if $VIMRUNTIME =~ ' '
+      if &sh =~ '\<cmd'
+        let cmd = '""' . $VIMRUNTIME . '\diff"'
+        let eq = '"'
+      else
+        let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+      endif
+    else
+      let cmd = $VIMRUNTIME . '\diff'
+    endif
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
 "=============================================================
-" set nowrap  " set wrap   "禁止自动换行/启用自动换行  有时候不自动换行看起来更清楚一些
+" set nowrap   set wrap   禁止自动换行/启用自动换行  有时候不自动换行看起来更清楚一些
 set cindent
 "  参考 :help cinoptions-values
 " :1  设置c 缩进风格， switch的case 语句相对switch语句的缩进为1
@@ -9,13 +44,15 @@ set cindent
 " N-s 设置c++ namespace的缩进为0
 set cino=:1,l1,g1,N-s
 
-set number
+set number        " 显示行号
 set tabstop=2     " 一个tab宽度为2
 set expandtab     " 把tab自动切换为空格
-" set noexpandtab   " 不自动替换tab
+" set noexpandtab  " 不自动替换tab
 set softtabstop=2 " backspace删除时，自动根据tabstop的值删除个空格
 set shiftwidth=2  " cindent缩进
-syntax on
+" set autoindent  自动缩进
+syntax on        " 语法高亮
+" set showmatch    " 默认就开启的高亮匹配的括号
 set cursorline "突出显示当前行 set nocursorline
 set autochdir " 自动切换当前目录为当前文件所在的目录
 set hidden " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim负责保存
@@ -28,6 +65,7 @@ set nofoldenable       " 打开文件时默认不要折叠
 set exrc  "设置vim加载所有目录下.vimrc文件，这样每个工程目录就可以有自己的自定义设置了。
 set secure  "限制上一步设置里面的目录下的vimrc不能使用某些不安全的命令
 set nobackup " 不要备份文件
+set noundofile
 
 " vim 7.3开始设置这个highlight long line，不过下面那个好像更好看
 " 设置 ColorColumn的颜色 highlight ColorColumn ctermbg=7 guibg=Black
@@ -44,23 +82,39 @@ set colorcolumn=80
 " set path=""
 
 " 设置编码, 参考 正确设置 Vim 的字符编码选项 http://rainux.org/vim-gvimvim-on-win32
-"set encoding=utf-8  "这个设置了之后，在windows 平台会导致界面提示消息等乱码
-                     " 但如果打开文件之后在用:set encoding=utf-8 设置就不会影响界面
-                     " 好像会在文件结尾加上编码标志，只是gvim内部使用的?
-                     " 我看有问题再设置这个选项好了
-" set nobomb       可以删除UTF-8 文件开始的几个BOM 文件编码标识的字节。
-                  " windows的记事本默认设置BOM，可以用vim打开，执行这个之后再
-                  " :wq 保存就可以删掉了
-set fileencoding=utf-8
-set fileencodings=utf-8,gbk
-" 上面的设置可以直接执行也可以放到vimrc文件里面去，以便每次启动时有效。可以下面这个加到vimrc方便使用
-"  编码设置相关设置的说明： 来自 http://wensuper.iteye.com/blog/1495384
-"        encoding（enc）：encoding是Vim的内部使用编码，encoding的设置会影响Vim内部的Buffer、消息文字等。在Unix环境下，encoding的默认设置等于locale；Windows环境下会和当前代码页相同。在中文Windows环境下encoding的默认设置是cp936（GBK）。
-"         fileencodings：Vim在打开文件时会根据fileencodings选项来识别文件编码，fileencodings可以同时设置多个编码，Vim会根据设置的顺序来猜测所打开文件的编码。
-"         fileencoding ：Vim在保存新建文件时会根据fileencoding的设置编码来保存。如果是打开已有文件，Vim会根据打开文件时所识别的编码来保存，除非在保存时重新设置fileencoding。
+" ==========
+"  encoding（enc）：encoding是Vim的内部使用编码，encoding的设置会影响Vim内部的Buffer、消息文字等。在Unix环境下，encoding的默认设置等于locale；Windows环境下会和当前代码页相同。在中文Windows环境下encoding的默认设置是cp936（GBK）。
+"  fileencodings：Vim在打开文件时会根据fileencodings选项来识别文件编码，fileencodings可以同时设置多个编码，Vim会根据设置的顺序来猜测所打开文件的编码。
+"  fileencoding ：Vim在保存新建文件时会根据fileencoding的设置编码来保存。如果是打开已有文件，Vim会根据打开文件时所识别的编码来保存，除非在保存时重新设置fileencoding。
 " termencodings（tenc）：在终端环境下使用Vim时，通过termencoding项来告诉Vim终端所使用的编码。
-"         termencodings：在终端环境下使用Vim时，通过termencoding项来告诉Vim终端所使用的编码。
+"  termencodings：在终端环境下使用Vim时，通过termencoding项来告诉Vim终端所使用的编码。
 " |:help encoding-values|列出Vim支持的所有编码。
+set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936
+set fileencoding=utf-8
+set encoding=utf-8 " vim内部存储使用的编码格式
+
+" 避免设置encoding=utf-8 后菜单乱码
+" 避免设置encoding=utf-8 后vim 提示信息乱码
+if has("win32")
+  set langmenu=zh_CN.UTF-8
+  let $LANG='zh_CN.UTF-8'
+  language message zh_CN.UTF-8
+  set langmenu=zh_CN.UTF-8 " 这个选项需要在菜单加载之前设置，不然要像下面这样重新加载，但可能导致自定义菜单失效
+  source $VIMRUNTIME/delmenu.vim
+	source $VIMRUNTIME/menu.vim
+endif
+
+" set nobomb       可以删除UTF-8 文件开始的几个BOM 文件编码标识的字节。
+" windows的记事本默认设置BOM，可以用vim打开，执行这个之后再
+" :wq 保存就可以删掉了
+
+" set fileformat=unix 进入vim可以修改文件的换行模式为linux的lf 风格或者windows crlf风格
+" setlocal fileformat=dos    fileformat 为local变量，也可以在这里一打开就修改?
+" set fileformats=auto  自动根据文件的原有换行是windows的 crlf还是
+" linux的lf，自动设定文件格式是unix还是dos换行模式。新文件自动采用系统默认黄行
+" 可以强制设置所有的文件都用unix换行也可以吧。不过git里面可以设置把源码文件（文
+" 本文件，或者某种扩展名的文件）在checkin，checkout时自动转换为某个换行模式。
+" 参考 https://git-scm.com/docs/gitattributes
 
 " 设置语法主题
 " monokai主题不支持字符终端，在xshell里面需要事先用gui2term.py
@@ -71,7 +125,6 @@ set fileencodings=utf-8,gbk
 " colorscheme monokai   " sublime text 编辑器风格
 " colorscheme flatland
 colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
-
 
 " 格式化代码块
 noremap <leader>a =ip
@@ -86,8 +139,6 @@ inoremap <leader>s <C-c>:w<cr>
 set noballooneval   " vimrc比插件早加载，后面那些插件里面又打开了，导致设置无效。进入界面再手工设置就可以。用autocmd 设置延时执行？
 set balloondelay=10000000  " 设置一个超长停留时间，鼠标停10000秒才显示 ballon tooltip， 插件里面不改这个，这样基本就禁止tooltip功能了
 
-
-
 " 在 xshell或者一个非GUI的字符终端里面，设置这个颜色为 25 color 显示更清楚
 " 但要字符终端支持256色才能这么设置，参考下面网站的说明
 " Using GUI color settings in a terminal
@@ -98,61 +149,61 @@ set balloondelay=10000000  " 设置一个超长停留时间，鼠标停10000秒�
 " http://www.vimer.cn/2010/02/%E8%AE%A9vim%E5%9C%A8%E7%BB%88%E7%AB%AF%E4%B8%8B%E7%9A%84%E9%85%8D%E8%89%B2%E4%BA%AE%E8%B5%B7%E6%9D%A5%EF%BC%81.html
 if has("gui_running")
 else
-	set t_Co=256 " 在不是GUI的终端里面，如果像xshell这样的支持256色的话就把这一句注释掉
+  set t_Co=256 " 在不是GUI的终端里面，如果像xshell这样的支持256色的话就把这一句注释掉
 endif
 
 " 编程字体
 " ========
 if has("gui_running")
-    if has("win32")
-        " 设定 windows 下 gvim 启动时最大化
-        autocmd GUIEnter * simalt ~x
-        " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
-        "好像程序员比较喜欢的字体有
-        "1. Bitstream Vera Sans Mono
-        "http://www-old.gnome.org/fonts/
-        "http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/
-        "2. 微软visual stuido 自带的 Consolas字体
-        "http://www.microsoft.com/en-us/download/details.aspx?id=17879
-        " 下载安装完，gvim的菜单里面又有了Consolas 字体，可以用下面这个设置
-        "  set guifont=Consolas:h12:cANSI
-        "  Bitstream_Vera_Sans_Mono在默认的 gvim菜单里面有这个，
-        "下面这个设置字体大小为12
-        "set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
-        set guifont=Source_Code_Pro:h14:cANSI
-    else
-        " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
-       " set guifont=DejaVu\ LGC\ Sans\ Mono\ 14
+  if has("win32")
+    " 设定 windows 下 gvim 启动时最大化
+    autocmd GUIEnter * simalt ~x
+    " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
+    "好像程序员比较喜欢的字体有
+    "1. Bitstream Vera Sans Mono
+    "http://www-old.gnome.org/fonts/
+    "http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/
+    "2. 微软visual stuido 自带的 Consolas字体
+    "http://www.microsoft.com/en-us/download/details.aspx?id=17879
+    " 下载安装完，gvim的菜单里面又有了Consolas 字体，可以用下面这个设置
+    "  set guifont=Consolas:h12:cANSI
+    "  Bitstream_Vera_Sans_Mono在默认的 gvim菜单里面有这个，
+    "下面这个设置字体大小为12
+    "set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
+    set guifont=Source_Code_Pro:h14:cANSI
+  else
+    " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
+    " set guifont=DejaVu\ LGC\ Sans\ Mono\ 14
 
-	   " debian上面，把字体下载回来放到
-	   " /usr/share/fonts/truetype/目录去就可以了
-	   " 在gvim (apt-get install vim-gtk) 里面可以也可以用这个字体
-	   " set guifont=Bitstream\ Vera\ Sans\ Mono\ 14
-     set guifont=Source_Code_Pro:h14:cANSI
-    endif
+    " debian上面，把字体下载回来放到
+    " /usr/share/fonts/truetype/目录去就可以了
+    " 在gvim (apt-get install vim-gtk) 里面可以也可以用这个字体
+    " set guifont=Bitstream\ Vera\ Sans\ Mono\ 14
+    set guifont=Source_Code_Pro:h14:cANSI
+  endif
 endif
 
 " 记录文件最后一次打开时光标所在的位置
- autocmd BufReadPost *
-\ if line("'\"")>0&&line("'\"")<=line("$") |
-\exe "normal g'\"" |
-\ endif
+autocmd BufReadPost *
+      \ if line("'\"")>0&&line("'\"")<=line("$") |
+      \exe "normal g'\"" |
+      \ endif
 
 " grep相关的配置
 " ==============
 " :nmap <F5> :cw<cr>
 " :nmap <F4> :cclose<cr>
-:nmap <F5> :cn<cr>
-:nmap <F6> :cp<cr>
+nmap <F5> :cn<cr>
+nmap <F6> :cp<cr>
 "把 f3 按键映射为在本目录下文件里面搜索光标下面的单词
 if has("win32")
-	" grep的设置
-	:set grepprg=c:/git/usr/bin/grep.exe\ -n
-	"windows平台用这个
-	:nmap <F3> "*yw<cr>:grep <c-v> ./*<cr><esc>:cw<cr>
+  " grep的设置
+  set grepprg=c:/git/usr/bin/grep.exe\ -n
+  "windows平台用这个
+  nmap <F3> "*yw<cr>:grep <c-v> ./*<cr><esc>:cw<cr>
 else
-	" linux 平台用这个
-	:nnoremap <F3> :grep <C-R><C-W> *<CR><esc>:cw<cr>
+  " linux 平台用这个
+  nnoremap <F3> :grep <C-R><C-W> *<CR><esc>:cw<cr>
 endif
 
 " 弹出和隐藏quickfix窗口
@@ -164,7 +215,7 @@ function! QFixToggle()
     unlet g:qfix_win
   else
     " copen 10
-	cw
+    cw
     let g:qfix_win = bufnr("$")
   endif
 endfunction
@@ -176,13 +227,12 @@ nmap <script> <silent> <F4> :call QFixToggle()<CR>
 set guioptions-=m
 set guioptions-=T
 map <silent> <F1> :if &guioptions =~# 'T' <Bar>
-        \set guioptions-=T <Bar>
-        \set guioptions-=m <bar>
-    \else <Bar>
-        \set guioptions +=T <Bar>
-        \set guioptions +=m <Bar>
-    \endif<CR>
-
+      \set guioptions-=T <Bar>
+      \set guioptions-=m <bar>
+      \else <Bar>
+      \set guioptions +=T <Bar>
+      \set guioptions +=m <Bar>
+      \endif<CR>
 
 " 编程风格，高亮和去掉行尾的空格
 " ==============================
@@ -191,7 +241,7 @@ map <silent> <F1> :if &guioptions =~# 'T' <Bar>
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 " ctermbg 必须用颜色名字，guibg可以用颜色值
 highlight default ExtraWhitespace ctermbg=red guibg=#F92672
-match ExtraWhitespace /\s\+$\| \+\t/
+match ExtraWhitespace /\s\+$\| \+\t\|\t\+ /
 " 可以用下面这个删掉所有的行尾空格
 " %s/\s\+$//
 " 或者像下面这个map <leader>w git stripspace命令，来删掉这个 whitespace error
@@ -210,20 +260,10 @@ endfunction
 
 " delete all trailing whitespace in current file
 if has ("win32")
-	map <leader>w :call Preserve(":%!c:/git/bin/git.exe stripspace")<CR>
+  map <leader>w :call Preserve(":%!c:/git/bin/git.exe stripspace")<CR>
 else
-	map <leader>w :call Preserve(":%!git stripspace")<CR>
+  map <leader>w :call Preserve(":%!git stripspace")<CR>
 endif
-
-
-
-
-
-
-
-
-
-
 
 " 管理 插件的插件
 " =======================================
@@ -241,7 +281,6 @@ endif
 "    cd ~/.vim/bundle
 "    git clone https://github.com/terryma/vim-multiple-cursors
 execute pathogen#infect()
-
 
 " Google C++ 代码风格
 " ==================
@@ -279,11 +318,14 @@ else
 
 endif
 
+" vim-airline 增强状态栏显示效果的插件
+" =====================================
+" git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
+set laststatus=2   "始终加载 airline 状态栏增强插件，要不然要创建一个split窗口才会加载
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
 " git clone https://github.com/terryma/vim-multiple-cursors
-
 
 " commentary.vim 快捷注释代码插件
 " ===============================
@@ -298,7 +340,6 @@ autocmd FileType gnuplot set commentstring=#\ %s
 autocmd FileType cpp set commentstring=//\ %s
 au BufNewFile,BufRead *.sam set filetype=tcl
 
-
 " vim-expand-region 自动扩展选择区域的插件
 " =====================================
 " git clone https://github.com/terryma/vim-expand-region
@@ -306,13 +347,11 @@ au BufNewFile,BufRead *.sam set filetype=tcl
 vmap + <Plug>(expand_region_expand)
 vmap _ <Plug>(expand_region_shrink
 
-
 " nerdtree 文件夹目录浏览树
 " =========================
 " git clone https://github.com/scrooloose/nerdtree
 " 把F2映射为显示左侧目录浏览树窗口开关
 map <F2> :NERDTreeToggle<CR>
-
 
 " Buffer Explorer 插件,可以辅助buf的选择
 " ==================================
@@ -328,39 +367,37 @@ noremap <silent> <F9> :BufExplorer<CR>
 nmap <F10> :bn<CR>
 nmap <F11> :bp<CR>
 
-
 " 加载 go 语言的插件
 " ==================
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
 " 在golang里面编译安装 https://github.com/jstemmer/gotags
 let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
-
+      \ 'ctagstype' : 'go',
+      \ 'kinds'     : [
+      \ 'p:package',
+      \ 'i:imports:1',
+      \ 'c:constants',
+      \ 'v:variables',
+      \ 't:types',
+      \ 'n:interfaces',
+      \ 'w:fields',
+      \ 'e:embedded',
+      \ 'm:methods',
+      \ 'r:constructor',
+      \ 'f:functions'
+      \ ],
+      \ 'sro' : '.',
+      \ 'kind2scope' : {
+      \ 't' : 'ctype',
+      \ 'n' : 'ntype'
+      \ },
+      \ 'scope2kind' : {
+      \ 'ctype' : 't',
+      \ 'ntype' : 'n'
+      \ },
+      \ 'ctagsbin'  : 'gotags',
+      \ 'ctagsargs' : '-sort -silent'
+      \ }
 
 " tabular 对齐插件
 "=======================
@@ -373,21 +410,18 @@ let g:tagbar_type_go = {
 " \S 匹配非空字符。  更多的正则表达式可以  :help pattern-atoms  查看帮组
 " 对齐c++注释   :Tab /\/\/
 
-
 " Tagbar 对c++ 的支持比 Taglist 更好
 " ====================================
 " git clone https://github.com/majutsushi/tagbar
 let Tlist_Use_Right_Window = 1   " 显示在右边窗格
- " nnoremap <silent> <F8> :TlistToggle<CR>
+" nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent> <F8> :TagbarToggle<CR>
-
 
 " surround  插件
 " ==============
 " git clone https://github.com/tpope/vim-surround
 " 可以快熟替换字符串两边两边的引号或者括号匹配对
 " 常用命令  替换cs'"  删除ds' 整行添加yss)  添加ysiw[  等
-
 
 " easymotion 插件
 " =============
@@ -397,12 +431,10 @@ nnoremap <silent> <F8> :TagbarToggle<CR>
 " 比如  \\w  \\f + 查找的字母  \\e   \\t 等
 " 其他的还有多字符匹配等，不过比较复杂。
 
-
 " vim-textobj-user 插件
 " =====================
 " git clone https://github.com/kana/vim-textobj-user
 " 允许自定义text block块，类似 vi{   vip  vａ(  等自定义块
-
 
 " 高亮  c/c++ 的函数名和类名
 " ===========================
@@ -410,12 +442,10 @@ nnoremap <silent> <F8> :TagbarToggle<CR>
 " windows 默认不加载 vim74/after/syntax 目录的脚本，需要配置一下
 set runtimepath+=$VIMRUNTIME/after
 
-
 " 窗体的透明度插件
 " ================
 " https://github.com/dbarsam/vim-vimtweak
 " autocmd BufReadPost * call libcallnr("vimtweak.dll", "SetAlpha", 255)
-
 
 " Drwait  绘图ascii图插件
 " ===================================================
