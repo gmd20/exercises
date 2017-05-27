@@ -61,7 +61,7 @@ sub ExecShellCmd2
   my $exit_code = $?>>8;
   if ($print_result) {
     if ($exit_code == 0) {
-      PrintOk "\"$cmd\"" if ($print_result);
+      PrintOk "\"$cmd\"";
     } else {
       PrintError "\"$cmd\" return error $exit_code\n--------------\n$output\n--------------\n";
     }
@@ -127,7 +127,12 @@ sub RunCustomCmd
   return 0
 }
 
+my $files = <<"FILES_END";
+kernel
+kernel/arch
+FILES_END
 
+my $command = shift @ARGV;
 
 switch($command) {
   case "compile"  { Compile($cfg_file); }
