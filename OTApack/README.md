@@ -36,7 +36,7 @@ pbzx.exe < payload > root_file.xz
 ---------------------
 1. [Taking apart iOS OTA Updates](http://newosxbook.com/articles/OTA.html)
 
-2. [Recreating iOS filesystem from an OTA](ttp://newosxbook.com/articles/OTA2.html)
+2. [Recreating iOS filesystem from an OTA](http://newosxbook.com/articles/OTA2.html)
 
 3. [A simple script to recreate the iOS/TvOS filesystem on your Mac](http://newosxbook.com/articles/OTA3.html)
 
