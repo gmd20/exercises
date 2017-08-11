@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while echo "input a key:"
+while echo -n "input a key:"
 do
   read key
   salt="dddd${key:0:1}d${key:6:2}"
