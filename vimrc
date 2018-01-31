@@ -1,17 +1,7 @@
-" Ubuntu 必须先安装vim，不然提示这个脚本有错
 " windows的默认vim配置文件位置:  C:\Program Files (x86)\Vim\_vimrc
 " linux的全局配置文件位置； /etc/vim/vimrc
-" linux的个人配置文件：~/.vimi/vimrc
-"==============================================================================
-" 制定vim的查找插件的目录.
-" windows平台默认不加载用户目录下的.vim目录 C:\Users\<用户名>\.vim
-" 但好像有些插件却又自动更新到这个目录下，可能program file目录下vimfiles
-" 没有写权限？
-"==============================================================================
-set runtimepath+=~/.vim
+" linux的个人配置文件：~/.vimrc
 
-" 这个是windows平台安装完gvim的默认配置
-if has("win32")
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
@@ -19,8 +9,6 @@ behave mswin
 
 set diffopt=iwhite
 set diffexpr=MyDiff()
-endif
-
 function MyDiff()
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
@@ -50,6 +38,14 @@ function MyDiff()
 endfunction
 
 
+"==============================================================================
+" 制定vim的查找插件的目录.
+" windows平台默认不加载用户目录下的.vim目录 C:\Users\<用户名>\.vim
+" 但好像有些插件却又自动更新到这个目录下，可能program file目录下vimfiles
+" 没有写权限？
+"==============================================================================
+set runtimepath+=~/.vim
+
 " ===============
 " 管理 插件的插件
 " ===============
@@ -78,7 +74,8 @@ set cindent
 " =0  设置c 缩进风格， switch的case 里面的语句按照case 缩进的距离，
 " g1 设置c++类的"pubic"，"private" ，"protected" 声明的 缩进为1
 " N-s 设置c++ namespace的缩进为0
-set cino=:1,l1,g1,N-s
+" (0  设置函数参数太多需要换行时的对齐
+set cino=:1,l1,g1,N-s,(0
 
 set number        " 显示行号
 set tabstop=2     " 一个tab宽度为2
@@ -395,32 +392,32 @@ nmap <F11> :bp<CR>
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
 " 在golang里面编译安装 https://github.com/jstemmer/gotags
 let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
+      \ 'ctagstype' : 'go',
+      \ 'kinds'     : [
+      \ 'p:package',
+      \ 'i:imports:1',
+      \ 'c:constants',
+      \ 'v:variables',
+      \ 't:types',
+      \ 'n:interfaces',
+      \ 'w:fields',
+      \ 'e:embedded',
+      \ 'm:methods',
+      \ 'r:constructor',
+      \ 'f:functions'
+      \ ],
+      \ 'sro' : '.',
+      \ 'kind2scope' : {
+      \ 't' : 'ctype',
+      \ 'n' : 'ntype'
+      \ },
+      \ 'scope2kind' : {
+      \ 'ctype' : 't',
+      \ 'ntype' : 'n'
+      \ },
+      \ 'ctagsbin'  : 'gotags',
+      \ 'ctagsargs' : '-sort -silent'
+      \ }
 
 " tabular 对齐插件
 "=======================
