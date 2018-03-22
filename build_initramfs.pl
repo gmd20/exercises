@@ -107,6 +107,8 @@ kernel/crypto/tea.ko.xz
 kernel/crypto/tgr192.ko.xz
 kernel/crypto/twofish_common.ko.xz
 kernel/drivers
+kernel/drivers/acpi
+kernel/drivers/acpi/video.ko.xz
 kernel/drivers/ata
 kernel/drivers/ata/ahci.ko.xz
 kernel/drivers/ata/ata_generic.ko.xz
@@ -124,6 +126,8 @@ kernel/drivers/i2c
 kernel/drivers/i2c/i2c-core.ko.xz
 kernel/drivers/i2c/algos
 kernel/drivers/i2c/algos/i2c-algo-bit.ko.xz
+kernel/drivers/i2c/busses
+kernel/drivers/i2c/busses/i2c-piix4.ko.xz
 kernel/drivers/input
 kernel/drivers/input/serio
 kernel/drivers/input/serio/serio_raw.ko.xz
@@ -246,6 +250,8 @@ kernel/lib/crc-itu-t.ko.xz
 kernel/lib/crc-t10dif.ko.xz
 kernel/lib/libcrc32c.ko.xz
 kernel/net/
+kernel/net/802
+kernel/net/802/stp.ko.xz
 kernel/net/8021q
 kernel/net/8021q/8021q.ko.xz
 kernel/net/bridge
