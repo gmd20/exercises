@@ -796,7 +796,9 @@ sub UpdateFilesInDir {
 }
 
 sub Build() {
-  ExecShellCmd2("cd $initrd_dir ; find . | cpio --quiet -H newc -o | gzip -9 -n > ../initramfs-busybox.img");
+  my $initramfs_name = `basename $initrd_dir`;
+  chomp($initramfs_name);
+  ExecShellCmd2("cd $initrd_dir ; find . | cpio --quiet -H newc -o | gzip -9 -n > ../${initramfs_name}.img");
 }
 
 my $command = shift @ARGV || "";
