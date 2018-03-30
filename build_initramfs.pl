@@ -650,10 +650,6 @@ vdso/vdso.so
 vdso/vdso32-int80.so
 vdso/vdso32-syscall.so
 vdso/vdso32-sysenter.so
-misc
-misc/vboxguest.ko
-misc/vboxsf.ko
-misc/vboxvideo.ko
 modules.block
 modules.drm
 modules.modesetting
