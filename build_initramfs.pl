@@ -117,9 +117,7 @@ kernel/drivers/ata/libahci.ko.xz
 kernel/drivers/ata/libata.ko.xz
 kernel/drivers/ata/pata_acpi.ko.xz
 kernel/drivers/block
-kernel/drivers/block/virtio_blk.ko.xz
-kernel/drivers/char
-kernel/drivers/char/virtio_console.ko.xz
+kernel/drivers/block/loop.ko.xz
 kernel/drivers/dca
 kernel/drivers/dca/dca.ko.xz
 kernel/drivers/i2c
@@ -190,7 +188,6 @@ kernel/drivers/net/ppp/pppoe.ko.xz
 kernel/drivers/net/ppp/pppox.ko.xz
 kernel/drivers/net/ppp/pptp.ko.xz
 kernel/drivers/net/tun.ko.xz
-kernel/drivers/net/virtio_net.ko.xz
 kernel/drivers/ptp
 kernel/drivers/ptp/ptp.ko.xz
 kernel/drivers/pps
@@ -202,16 +199,10 @@ kernel/drivers/scsi/libiscsi.ko.xz
 kernel/drivers/scsi/libiscsi_tcp.ko.xz
 kernel/drivers/scsi/sd_mod.ko.xz
 kernel/drivers/scsi/sr_mod.ko.xz
-kernel/drivers/scsi/virtio_scsi.ko.xz
 kernel/drivers/ssb
 kernel/drivers/ssb/ssb.ko.xz
 kernel/drivers/uio
 kernel/drivers/uio/uio.ko.xz
-kernel/drivers/virtio
-kernel/drivers/virtio/virtio.ko.xz
-kernel/drivers/virtio/virtio_pci.ko.xz
-kernel/drivers/virtio/virtio_input.ko.xz
-kernel/drivers/virtio/virtio_ring.ko.xz
 kernel/fs
 kernel/fs/mbcache.ko.xz
 kernel/fs/ext4
@@ -636,9 +627,6 @@ kernel/net/unix
 kernel/net/unix/unix_diag.ko.xz
 kernel/net/xfrm
 kernel/net/xfrm/xfrm_ipcomp.ko.xz
-kernel/virt
-kernel/virt/lib
-kernel/virt/lib/irqbypass.ko.xz
 kernel/drivers/usb/class
 kernel/drivers/usb/class/cdc-acm.ko.xz
 kernel/drivers/usb/serial
