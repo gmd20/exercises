@@ -1,7 +1,17 @@
+" Ubuntu 必须先安装vim，不然提示这个脚本有错
 " windows的默认vim配置文件位置:  C:\Program Files (x86)\Vim\_vimrc
 " linux的全局配置文件位置； /etc/vim/vimrc
-" linux的个人配置文件：~/.vimrc
+" linux的个人配置文件：~/.vim/vimrc
+"==============================================================================
+" 制定vim的查找插件的目录.
+" windows平台默认不加载用户目录下的.vim目录 C:\Users\<用户名>\.vim
+" 但好像有些插件却又自动更新到这个目录下，可能program file目录下vimfiles
+" 没有写权限？
+"==============================================================================
+set runtimepath+=~/.vim
 
+" 这个是windows平台安装完gvim的默认配置
+if has("win32")
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
@@ -9,6 +19,8 @@ behave mswin
 
 set diffopt=iwhite
 set diffexpr=MyDiff()
+endif
+
 function MyDiff()
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
@@ -21,7 +33,7 @@ function MyDiff()
   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
   let eq = ''
   if has("win32")
-    let cmd = 'C:/Git/usr/bin/diff.exe'
+    let cmd = 'D:/Git/usr/bin/diff.exe'
   else
     if $VIMRUNTIME =~ ' '
       if &sh =~ '\<cmd'
@@ -38,22 +50,14 @@ function MyDiff()
 endfunction
 
 
-"==============================================================================
-" 制定vim的查找插件的目录.
-" windows平台默认不加载用户目录下的.vim目录 C:\Users\<用户名>\.vim
-" 但好像有些插件却又自动更新到这个目录下，可能program file目录下vimfiles
-" 没有写权限？
-"==============================================================================
-set runtimepath+=~/.vim
-
 " ===============
 " 管理 插件的插件
 " ===============
 " https://github.com/tpope/vim-pathogen
 "
 "  Install to ~/.vim/autoload/pathogen.vim. Or copy and paste:
-"      mkdir -pcpplint.vim/autoload ~/.vim/bundle && \
-"  curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+"     mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+"     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 "  If you're using Windows, change all occurrences of ~/.vim to ~\vimfiles."
 "
 "  安装好pathogen 插件后， 其他所有的插件用 git clone 下载到
@@ -159,7 +163,9 @@ endif
 " colorscheme flatland
 "
 " git clone https://github.com/tomasr/molokai
-colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
+" colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
+set background=dark
+colorscheme vim-material
 
 " 格式化代码块快捷键
 noremap <leader>a =ip
@@ -233,7 +239,7 @@ nmap <F6> :cp<cr>
 "把 f3 按键映射为在本目录下文件里面搜索光标下面的单词
 if has("win32")
   " grep的设置
-  set grepprg=c:/git/usr/bin/grep.exe\ -n
+  set grepprg=D:/git/usr/bin/grep.exe\ -n
   "windows平台用这个
   nmap <F3> "*yw<cr>:grep <c-v> ./*<cr><esc>:cw<cr>
 else
@@ -295,7 +301,7 @@ endfunction
 
 " delete all trailing whitespace in current file
 if has ("win32")
-  map <leader>w :call Preserve(":%!c:/git/bin/git.exe stripspace")<CR>
+  map <leader>w :call Preserve(":%!D:/git/bin/git.exe stripspace")<CR>
 else
   map <leader>w :call Preserve(":%!git stripspace")<CR>
 endif
@@ -330,8 +336,8 @@ endif
 " 支持python。 发现安装最新的python2.7.11版，gvim程序执行python命令会导致
 " 程序崩溃， 安装 2.7.10可以正常工作
 if has("win32")
-  let g:clang_format_path = "C:\\Program Files\\LLVM\\bin\\clang-format.exe"
-  map <C-K> :pyfile C:\Program\ Files\LLVM\share\clang\clang-format.py<cr>
+  let g:clang_format_path = "D:\\Program Files\\LLVM\\bin\\clang-format.exe"
+  map <C-K> :pyfile D:\Program\ Files\LLVM\share\clang\clang-format.py<cr>
   " imap <C-K> <c-o>:pyf <path-to-this-file>/clang-format.py<cr>
 else
   let g:clang_format_path = "/usr/bin/clang-format-3.5"
@@ -392,32 +398,32 @@ nmap <F11> :bp<CR>
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
 " 在golang里面编译安装 https://github.com/jstemmer/gotags
 let g:tagbar_type_go = {
-      \ 'ctagstype' : 'go',
-      \ 'kinds'     : [
-      \ 'p:package',
-      \ 'i:imports:1',
-      \ 'c:constants',
-      \ 'v:variables',
-      \ 't:types',
-      \ 'n:interfaces',
-      \ 'w:fields',
-      \ 'e:embedded',
-      \ 'm:methods',
-      \ 'r:constructor',
-      \ 'f:functions'
-      \ ],
-      \ 'sro' : '.',
-      \ 'kind2scope' : {
-      \ 't' : 'ctype',
-      \ 'n' : 'ntype'
-      \ },
-      \ 'scope2kind' : {
-      \ 'ctype' : 't',
-      \ 'ntype' : 'n'
-      \ },
-      \ 'ctagsbin'  : 'gotags',
-      \ 'ctagsargs' : '-sort -silent'
-      \ }
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
 
 " tabular 对齐插件
 "=======================
