@@ -15,7 +15,7 @@ if has("win32")
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
-behave mswin
+" behave mswin
 
 set diffopt=iwhite
 set diffexpr=MyDiff()
@@ -396,7 +396,11 @@ nmap <F11> :bp<CR>
 " 加载 go 语言的插件
 " ==================
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
+" vim-go使用了gopls智能补全工具
+" go get golang.org/x/tools/cmd/gopls
+"
 " 在golang里面编译安装 https://github.com/jstemmer/gotags
+" go get github.com/jstemmer/gotags
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
 	\ 'kinds'     : [
