@@ -338,5 +338,5 @@ sub _throw {
   die "$context\n";
 }
 
-
+package TinyJSON::_Bool;
 1;
