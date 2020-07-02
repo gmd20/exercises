@@ -167,8 +167,6 @@ endif
 set background=dark
 colorscheme vim-material
 
-" 格式化代码块快捷键
-noremap <leader>a =ip
 
 " 切换paste 模式快捷键
 set pastetoggle=<leader>z
@@ -439,6 +437,7 @@ let g:tagbar_type_go = {
 " 比如    :Tab /\w*;   可以对齐结构元素定义
 " \S 匹配非空字符。  更多的正则表达式可以  :help pattern-atoms  查看帮组
 " 对齐c++注释   :Tab /\/\/
+noremap <leader>a :Tab /\S\+;<cr>
 
 " Tagbar 对c++ 的支持比 Taglist 更好
 " ====================================
