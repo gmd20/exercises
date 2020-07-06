@@ -242,7 +242,7 @@ sub _encode_value {
 
     # True or false
     return $$value ? 'true' : 'false' if $ref eq 'SCALAR';
-    return ($value eq $TRUE) ? 'true' : 'false' if $ref eq 'TinyJSON::_Bool';
+    return $$value ? 'true' : 'false' if $ref eq 'TinyJSON::_Bool';
   }
 
   # Null
