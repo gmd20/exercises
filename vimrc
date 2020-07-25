@@ -73,13 +73,13 @@ autocmd BufReadPost * set vb t_vb=  "禁用响铃
 " set nowrap   set wrap   禁止自动换行/启用自动换行  有时候不自动换行看起来更清楚一些
 set cindent
 "  参考 :help cinoptions-values
-" :1  设置c 缩进风格， switch的case 语句相对switch语句的缩进为1
-" l1  设置c 缩进风格， switch的case 里面的语句把case 作为对齐标准，而不是跟上一句语句对齐
+" :1s  设置c 缩进风格， switch的case " 语句相对switch语句的缩进为1个shiftwidth
+" l1s  设置c 缩进风格， switch的case 里面的语句把case 作为对齐标准，而不是跟上一句语句对齐
 " =0  设置c 缩进风格， switch的case 里面的语句按照case 缩进的距离，
-" g1 设置c++类的"pubic"，"private" ，"protected" 声明的 缩进为1
+" g1s 设置c++类的"pubic"，"private" ，"protected" 声明的 缩进为1个shiftwidth
 " N-s 设置c++ namespace的缩进为0
 " (0  设置函数参数太多需要换行时的对齐
-set cino=:1,l1,g1,N-s,(0
+set cino=:1s,l1s,g1s,N-s,(0
 
 set number        " 显示行号
 set tabstop=2     " 一个tab宽度为2
