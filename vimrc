@@ -10,45 +10,48 @@
 "==============================================================================
 set runtimepath+=~/.vim
 
-" 这个是windows平台安装完gvim的默认配置
-if has("win32")
-set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
-" behave mswin
 
-set diffopt=iwhite
-set diffexpr=MyDiff()
+" Vim with all enhancements
+source $VIMRUNTIME/vimrc_example.vim
+
+" Use the internal diff if available.
+" Otherwise use the special 'diffexpr' for Windows.
+if &diffopt !~# 'internal'
+  set diffexpr=MyDiff()
 endif
-
 function MyDiff()
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
   let arg1 = v:fname_in
   if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg1 = substitute(arg1, '!', '\!', 'g')
   let arg2 = v:fname_new
   if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg2 = substitute(arg2, '!', '\!', 'g')
   let arg3 = v:fname_out
   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if has("win32")
-    let cmd = 'D:/Git/usr/bin/diff.exe'
-  else
-    if $VIMRUNTIME =~ ' '
-      if &sh =~ '\<cmd'
-        let cmd = '""' . $VIMRUNTIME . '\diff"'
-        let eq = '"'
-      else
-        let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+  let arg3 = substitute(arg3, '!', '\!', 'g')
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
       endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
     else
-      let cmd = $VIMRUNTIME . '\diff'
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
     endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
   endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+  let cmd = substitute(cmd, '!', '\!', 'g')
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
 endfunction
-
 
 " ===============
 " 管理 插件的插件
@@ -396,7 +399,16 @@ nmap <F11> :bp<CR>
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
 " vim-go使用了gopls智能补全工具
 " go get golang.org/x/tools/cmd/gopls
-"
+" windows平台最新的vim-go和gopls兼容有问题，需要禁用gopls，这样自动保存才会
+" 使用gofmt来做格式化. 参见vim-go\autoload\go\fmt.vim和config.vim
+let g:go_gopls_enabled = 1
+let g:go_fmt_command = 'gofmt'
+let g:go_fmt_autosave = 1
+let g:go_imports_autosave = 0
+" vim-go依赖 gopls的filetype事件才注册自动格式化，参见vim-go\ftplugin\go.vim
+" 这里自己注册一下
+autocmd BufWritePre *.go call go#auto#fmt_autosave()
+
 " 在golang里面编译安装 https://github.com/jstemmer/gotags
 " go get github.com/jstemmer/gotags
 let g:tagbar_type_go = {
