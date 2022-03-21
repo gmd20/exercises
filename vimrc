@@ -164,11 +164,12 @@ endif
 " 不然设置这个主题，颜色效果出不来。参考下面set  t_Co=256的说明
 " colorscheme monokai   " sublime text 编辑器风格
 " colorscheme flatland
+" colorscheme material
 "
 " git clone https://github.com/tomasr/molokai
 " colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
 set background=dark
-colorscheme vim-material
+colorscheme PaperColor
 
 
 " 切换paste 模式快捷键
@@ -219,9 +220,11 @@ if has("gui_running")
   if has("win32")
     " 设定 windows 下 gvim 启动时最大化
     autocmd GUIEnter * simalt ~x
-    set guifont=Source_Code_Pro:h14:cANSI
+    " set guifont=Source_Code_Pro:h14:cANSI
+    set guifont=JetBrains_Mono:h14:cANSI:qDRAFT
   else
-    set guifont=Source_Code_Pro:h14:cANSI
+    " set guifont=Source_Code_Pro:h14:cANSI
+    set guifont=JetBrains_Mono:h14:cANSI:qDRAFT
   endif
 endif
 
@@ -240,7 +243,7 @@ nmap <F6> :cp<cr>
 "把 f3 按键映射为在本目录下文件里面搜索光标下面的单词
 if has("win32")
   " grep的设置
-  set grepprg=D:/git/usr/bin/grep.exe\ -n
+  set grepprg=C:/git/usr/bin/grep.exe\ -n
   "windows平台用这个
   nmap <F3> "*yw<cr>:grep <c-v> ./*<cr><esc>:cw<cr>
 else
@@ -345,14 +348,15 @@ else
   map <C-K> :pyfile /usr/share/vim/addons/syntax/clang-format-3.5.py<cr>
 endif
 
-" vim-airline 增强状态栏显示效果的插件
-" =====================================
-" git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
-set laststatus=2   "始终加载 airline 状态栏增强插件，要不然要创建一个split窗口才会加载
+
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
 " git clone https://github.com/terryma/vim-multiple-cursors
+"
+" 下面这个更好用？  听说速度快
+" https://github.com/mg979/vim-visual-multi
+"  ctrl + 上下箭头 多光标， ctrl + n 选择一个单词
 
 " commentary.vim 快捷注释代码插件
 " ===============================
@@ -401,7 +405,7 @@ nmap <F11> :bp<CR>
 " go get golang.org/x/tools/cmd/gopls
 " windows平台最新的vim-go和gopls兼容有问题，需要禁用gopls，这样自动保存才会
 " 使用gofmt来做格式化. 参见vim-go\autoload\go\fmt.vim和config.vim
-let g:go_gopls_enabled = 1
+let g:go_gopls_enabled = 0
 let g:go_fmt_command = 'gofmt'
 let g:go_fmt_autosave = 1
 let g:go_imports_autosave = 0
@@ -496,3 +500,21 @@ nnoremap <silent> <F8> :TagbarToggle<CR>
 " http://www.vim.org/scripts/script.php?script_id=593
 " https://github.com/schmich/vim-guifont
 " 把映射键改为  alt + 加减号放大缩小字体
+
+
+" vim-airline 增强状态栏显示效果的插件
+" =====================================
+" git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
+" 9
+" 这个更好用一些？更轻量一些？？
+" https://github.com/itchyny/lightline.vim
+set laststatus=2   "始终加载 airline 状态栏增强插件，要不然要创建一个split窗口才会加载
+let g:lightline = {
+                \ 'active': {
+                \   'left': [ [ 'mode', 'paste' ],
+                \             [ 'filename', 'tagbar' ] ]
+                \ },
+                \ 'component': {
+                \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f" )}',
+                \ }
+                \ }
