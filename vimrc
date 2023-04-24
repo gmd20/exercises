@@ -165,11 +165,11 @@ endif
 " colorscheme monokai   " sublime text 编辑器风格
 " colorscheme flatland
 " colorscheme material
+"" colorscheme PaperColor
 "
 " git clone https://github.com/tomasr/molokai
-" colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
-set background=dark
-colorscheme PaperColor
+" set background=dark
+ colorscheme molokai   " 基于 monokai的修改的主题，比monokai背景要好看一些。
 
 
 " 切换paste 模式快捷键
@@ -305,7 +305,7 @@ endfunction
 
 " delete all trailing whitespace in current file
 if has ("win32")
-  map <leader>w :call Preserve(":%!D:/git/bin/git.exe stripspace")<CR>
+  map <leader>w :call Preserve(":%!C:/git/bin/git.exe stripspace")<CR>
 else
   map <leader>w :call Preserve(":%!git stripspace")<CR>
 endif
@@ -341,7 +341,7 @@ endif
 " 程序崩溃， 安装 2.7.10可以正常工作
 if has("win32")
   let g:clang_format_path = "D:\\Program Files\\LLVM\\bin\\clang-format.exe"
-  map <C-K> :pyfile D:\Program\ Files\LLVM\share\clang\clang-format.py<cr>
+  map <C-K> :pyfile C:\Program\ Files\LLVM\share\clang\clang-format.py<cr>
   " imap <C-K> <c-o>:pyf <path-to-this-file>/clang-format.py<cr>
 else
   let g:clang_format_path = "/usr/bin/clang-format-3.5"
@@ -358,12 +358,27 @@ endif
 " https://github.com/mg979/vim-visual-multi
 "  ctrl + 上下箭头 多光标， ctrl + n 选择一个单词
 
-" commentary.vim 快捷注释代码插件
+" nerdcommenter 快捷注释代码插件
 " ===============================
-" git clone https://github.com/tpope/vim-commentary
+" giut cloen https://github.com/preservim/nerdcommenter
 " 映射为空格键注释代码
-:nmap <space> gcc
-:vmap <space> gc
+"
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+" Set a language to use its alternate delimiters by default
+" c语言的注释默认使用 \\  而不是 \* *\
+let g:NERDAltDelims_c = 1
+
+:nmap <space> :call nerdcommenter#Comment('n', 'toggle')<CR>
+:vmap <space> :call nerdcommenter#Comment('x', 'toggle')<CR>
 
 " 添加commentary注释插件的 cmake文件的注释模式
 autocmd FileType cmake set commentstring=#\ %s
