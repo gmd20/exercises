@@ -310,45 +310,10 @@ else
   map <leader>w :call Preserve(":%!git stripspace")<CR>
 endif
 
-" Google C++ 代码风格
-" ==================
-" 1.  google 的c++ 代码风格检查 cpplint 工具，按 <F7> 检查 google 风格
-" https://github.com/google/styleguide/tree/gh-pages/cpplint/cpplint.py $HOME/bin
-" mkdir -p ~/bin && \
-" curl -LSso ~/bin/cpplint.py https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py
-" 安装辅助vi插件
-" git clone https://github.com/funorpain/vim-cpplint
-"
-" 2.安装windows 版本的clang
-" apt-get install clang
-" apt-get install clang-format-3.5
-"
-" 选中要格式化的行，然后按 <ctrl> + k  自动调用 clang-format 格式化文件为google的c++ 代码风格。
-" clang-format 使用的例子
-"   C:\Program Files (x86)\LLVM\bin\clang-format.exe  -style=Google  -sort-includes d:/log_stream.cpp
-" clang-format 通过--style参数指定要格式化为的格式
-" 在源码目录里面放名字为 '.clang-format' or '_clang-format'
-" 文件，里面写Google应该就可以了。 不过我是直接修改 clang-format.py<里面的
-" style = 'file'  为 style = 'Google'
-" # Change this to format according to other formatting styles. See the output of
-" # 'clang-format --help' for a list of supported styles. The default looks for
-" # a '.clang-format' or '_clang-format' file to indicate the style that should be
-" # used.
-" style = 'file'
-" gvim.exe是32位的，python也要安装32位的
-" 最新的gvim 会动态加载python27.dll 模块，可以 :version 查看编译选项是否
-" 支持python。 发现安装最新的python2.7.11版，gvim程序执行python命令会导致
-" 程序崩溃， 安装 2.7.10可以正常工作
-if has("win32")
-  let g:clang_format_path = "D:\\Program Files\\LLVM\\bin\\clang-format.exe"
-  map <C-K> :pyfile C:\Program\ Files\LLVM\share\clang\clang-format.py<cr>
-  " imap <C-K> <c-o>:pyf <path-to-this-file>/clang-format.py<cr>
-else
-  let g:clang_format_path = "/usr/bin/clang-format-3.5"
-  map <C-K> :pyfile /usr/share/vim/addons/syntax/clang-format-3.5.py<cr>
-endif
-
-
+" C/C++  golang 等语言代码语法错误提示
+" ============================
+" git clone https://github.com/dense-analysis/ale
+" c/c++ 下载安装LLVM https://github.com/llvm/llvm-project/releases
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
