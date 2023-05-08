@@ -314,6 +314,9 @@ endif
 " ============================
 " git clone https://github.com/dense-analysis/ale
 " c/c++ 下载安装LLVM https://github.com/llvm/llvm-project/releases
+"
+"跳转到变量定义
+nmap <F7> :ALEGoToDefinition<cr>
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
