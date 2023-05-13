@@ -328,7 +328,7 @@ nmap <F7> :ALEGoToDefinition<cr>
 
 " nerdcommenter 快捷注释代码插件
 " ===============================
-" giut cloen https://github.com/preservim/nerdcommenter
+" git clone https://github.com/preservim/nerdcommenter
 " 映射为空格键注释代码
 "
 " Add spaces after comment delimiters by default
