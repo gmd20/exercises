@@ -317,6 +317,7 @@ endif
 "
 "跳转到变量定义
 nmap <F7> :ALEGoToDefinition<cr>
+let g:ale_completion_enabled = 1
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
