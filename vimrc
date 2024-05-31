@@ -251,20 +251,22 @@ else
   nnoremap <F3> :grep <C-R><C-W> *<CR><esc>:cw<cr>
 endif
 
-" 弹出和隐藏quickfix窗口
+" 弹出和隐藏quickfix 和locaiton list窗口
 " =======================
-" 来自http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function! QFixToggle()
-  if exists("g:qfix_win")
-    cclose
-    unlet g:qfix_win
-  else
-    " copen 10
-    cw
-    let g:qfix_win = bufnr("$")
+  if get(getloclist(0, {'winid':0}), 'winid', 0)
+    " the location list window is open
+    lwindow
   endif
+
+  if get(getqflist({'winid':0}), 'winid', 0)
+    " the quickfix window is open
+    cclose
+  else
+    cwindow
+  endif
+
 endfunction
-let g:qfix_win = 1
 nmap <script> <silent> <F4> :call QFixToggle()<CR>
 
 "  隐藏菜单和工具栏，按F1才显示 Toggle Menu and Toolbar
