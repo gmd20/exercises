@@ -10,10 +10,25 @@
 "==============================================================================
 set runtimepath+=~/.vim
 
-source $VIMRUNTIME/mswin.vim
 
-" Vim with all enhancements
-source $VIMRUNTIME/vimrc_example.vim
+
+let $PATH = 
+    \'/usr/local/bin:' .
+    \'/usr/bin:' .
+    \'/bin:' .
+    \'/usr/sbin:' .
+    \'/sbin:' .
+    \$HOME . '/.local/bin:' .
+    \$HOME . '/go/bin:' .
+    \$HOME . '/ghm/bin:' .
+    \$PATH
+
+behave mswin
+if has('clipboard')
+    vnoremap <C-c> "+y
+    nnoremap <C-v> "+p
+    inoremap <C-v> <C-r>+
+endif
 
 " Use the internal diff if available.
 " Otherwise use the special 'diffexpr' for Windows.
@@ -53,6 +68,9 @@ function MyDiff()
   endif
 endfunction
 
+
+
+
 " ===============
 " 管理 插件的插件
 " ===============
@@ -71,7 +89,13 @@ endfunction
 "    git clone https://github.com/terryma/vim-multiple-cursors
 execute pathogen#infect()
 
+
+
+
 "=============================================================
+set noerrorbells
+set visualbell
+set t_vb=
 autocmd BufReadPost * set vb t_vb=  "禁用响铃
 " set nowrap   set wrap   禁止自动换行/启用自动换行  有时候不自动换行看起来更清楚一些
 set cindent
@@ -224,7 +248,9 @@ if has("gui_running")
     set guifont=JetBrains_Mono:h14:cANSI:qDRAFT
   else
     " set guifont=Source_Code_Pro:h14:cANSI
-    set guifont=JetBrains_Mono:h14:cANSI:qDRAFT
+    "set guifont=JetBrains_Mono:h14:cANSI:qDRAFT
+    " set guifont=Source_Code_Pro:h14:cANSI
+    set guifont=Fira\ Code\ 14
   endif
 endif
 
@@ -312,6 +338,11 @@ else
   map <leader>w :call Preserve(":%!git stripspace")<CR>
 endif
 
+
+
+
+
+
 " C/C++  golang 等语言代码语法错误提示
 " ============================
 " git clone https://github.com/dense-analysis/ale
@@ -319,7 +350,6 @@ endif
 "
 "跳转到变量定义
 nmap <F7> :ALEGoToDefinition<cr>
-let g:ale_completion_enabled = 1
 
 " vim-multiple-cursors插件 “True Sublime Text style multiple selections for Vim”
 " ========================
@@ -331,7 +361,7 @@ let g:ale_completion_enabled = 1
 
 " nerdcommenter 快捷注释代码插件
 " ===============================
-" git clone https://github.com/preservim/nerdcommenter
+" giut cloen https://github.com/preservim/nerdcommenter
 " 映射为空格键注释代码
 "
 " Add spaces after comment delimiters by default
@@ -391,7 +421,7 @@ nmap <F11> :bp<CR>
 " go get golang.org/x/tools/cmd/gopls
 " windows平台最新的vim-go和gopls兼容有问题，需要禁用gopls，这样自动保存才会
 " 使用gofmt来做格式化. 参见vim-go\autoload\go\fmt.vim和config.vim
-let g:go_gopls_enabled = 0
+let g:go_gopls_enabled = 1
 let g:go_fmt_command = 'gofmt'
 let g:go_fmt_autosave = 1
 let g:go_imports_autosave = 0
@@ -504,3 +534,10 @@ let g:lightline = {
                 \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f" )}',
                 \ }
                 \ }
+
+
+" 8c# 的文件缩进
+" =================
+autocmd FileType cs setlocal shiftwidth=4 tabstop=4 expandtab
+autocmd FileType cs setlocal formatoptions+=cro
+autocmd FileType cs setlocal cinoptions={0s
