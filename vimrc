@@ -28,6 +28,7 @@ if has('clipboard')
     vnoremap <C-c> "+y
     nnoremap <C-v> "+p
     inoremap <C-v> <C-r>+
+     nnoremap <C-a> ggVG
 endif
 
 " Use the internal diff if available.
