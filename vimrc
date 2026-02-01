@@ -272,10 +272,10 @@ if has("win33")
   " grep的设置
   set grepprg=C:/git/usr/bin/grep.exe\ -n
   "windows平台用这个
-  nmap <F4> "*yw<cr>:grep <c-v> ./*<cr><esc>:cw<cr>
+  nmap <F4> "*yw<cr>:grep -I <c-v> ./*<cr><esc>:cw<cr>
 else
   " linux 平台用这个
-  nnoremap <F4> :grep <C-R><C-W> *<CR><esc>:cw<cr>
+  nnoremap <F4> :grep -I <C-R><C-W> *<CR><esc>:cw<cr>
 endif
 
 " 弹出和隐藏quickfix 和locaiton list窗口
