@@ -1,7 +1,7 @@
 " Ubuntu 必须先安装vim，不然提示这个脚本有错
-" windows的默认vim配置文件位置:  C:\Program Files (x86)\Vim\_vimrc
-" linux的全局配置文件位置； /etc/vim/vimrc
-" linux的个人配置文件：~/.vim/vimrc
+" windows 的默认vim配置文件位置:  C:\Program Files (x86)\Vim\_vimrc
+" linux 的全局配置文件位置； /etc/vim/vimrc
+" linux 的个人配置文件：~/.vim/vimrc
 "==============================================================================
 " 制定vim的查找插件的目录.
 " windows平台默认不加载用户目录下的.vim目录 C:\Users\<用户名>\.vim
@@ -26,11 +26,13 @@ let $PATH =
 
 behave mswin
 if has('clipboard')
-    vnoremap <C-c> "+y
-    nnoremap <C-v> "+p
-    cnoremap <C-v> <C-r>+
-    inoremap <silent> <C-V> <C-O>:set paste<CR><C-R>+<C-O>:set nopaste<CR>
-    nnoremap <C-a> ggVG
+    " 1. 将系统剪贴板 (+) 设置为默认无名寄存器
+    " 这样你直接按 y 就是复制到系统，按 p 就是粘贴系统内容
+    set clipboard=unnamedplus
+
+    " 2. (可选) 如果你想让 Vim 的复制同时同步到鼠标选中剪贴板 (*)
+    " 可以在可视化模式复制后，顺便拷贝到 * 寄存器
+    vnoremap y "+y<CR>:let @*=@+<CR>
 endif
 
 " Use the internal diff if available.
@@ -360,13 +362,13 @@ nmap <F7> :ALEGoToDefinition<cr>
 let g:rustfmt_autosave = 1    " 保存时自动格式化
 let g:rustfmt_fail_silently = 0  " 格式化失败时提示
 let g:rustfmt_command = 'rustfmt'   " 自定义格式化命令
-" 
-" let g:rustfmt_options = '--edition 2024'
+"
+" let g:rustfmt_options = '--edition 2024 --style-edition 2024'
 " 保存 .rs 文件时，自动调用 rustfmt 格式化
 " autocmd BufWritePost *.rs silent !rustfmt --edition=2024 %
 
 let g:ale_linters = {
-     \ 'rust': ['cargo', 'clippy'], 
+     \ 'rust': ['cargo', 'clippy'],
 \ }
 let g:ale_fixers = {
         \ 'rust': ['cargo', 'rustfmt'],
@@ -400,6 +402,8 @@ let g:NERDTrimTrailingWhitespace = 1
 " Set a language to use its alternate delimiters by default
 " c语言的注释默认使用 \\  而不是 \* *\
 let g:NERDAltDelims_c = 1
+let g:NERDTreeWinSize=20
+
 
 :nmap <space> :call nerdcommenter#Comment('n', 'toggle')<CR>
 :vmap <space> :call nerdcommenter#Comment('x', 'toggle')<CR>
