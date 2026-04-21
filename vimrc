@@ -33,6 +33,14 @@ if has('clipboard')
     " 2. (可选) 如果你想让 Vim 的复制同时同步到鼠标选中剪贴板 (*)
     " 可以在可视化模式复制后，顺便拷贝到 * 寄存器
     vnoremap y "+y<CR>:let @*=@+<CR>
+
+  " Ctrl+A: 复制整个文件内容到系统剪贴板
+  nnoremap <C-a> :%y+<CR>
+
+  " Ctrl+X: 视觉模式剪切选中内容，普通模式剪切当前行
+  vnoremap <C-x> "+x
+  nnoremap <C-x> "+dd
+
 endif
 
 " Use the internal diff if available.
