@@ -26,16 +26,19 @@ let $PATH =
 
 behave mswin
 if has('clipboard')
-    " 1. 将系统剪贴板 (+) 设置为默认无名寄存器
-    " 这样你直接按 y 就是复制到系统，按 p 就是粘贴系统内容
-    set clipboard=unnamedplus
+  " 1. 将系统剪贴板 (+) 设置为默认无名寄存器
+  " 这样你直接按 y 就是复制到系统，按 p 就是粘贴系统内容
+  set clipboard=unnamedplus
+  " 加号选系统粘贴板
+  " "+yy "+p
 
-    " 2. (可选) 如果你想让 Vim 的复制同时同步到鼠标选中剪贴板 (*)
-    " 可以在可视化模式复制后，顺便拷贝到 * 寄存器
-    vnoremap y "+y<CR>:let @*=@+<CR>
+  " 2. (可选) 如果你想让 Vim 的复制同时同步到鼠标选中剪贴板 (*)
+  " 可以在可视化模式复制后，顺便拷贝到 * 寄存器
+  vnoremap y "+y<CR>:let @*=@+<CR>
 
   " Ctrl+A: 复制整个文件内容到系统剪贴板
   nnoremap <C-a> :%y+<CR>
+  xnoremap <C-a> :%y+<CR>
 
   " Ctrl+X: 视觉模式剪切选中内容，普通模式剪切当前行
   vnoremap <C-x> "+x
@@ -286,8 +289,12 @@ if has("win32")
   "windows平台用这个
   nmap <F3> "*yw<cr>:grep -I <c-v> ./*<cr><esc>:cw<cr>
 else
+  " 让 :grep 实际调用 rg
+  set grepprg=rg\ -n\ --no-heading\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+  nnoremap <F3> :silent! grep! <C-R><C-W> .<CR>:cw<CR>
   " linux 平台用这个
-  nnoremap <F3> :grep -I <C-R><C-W> ./*<CR><esc>:cw<cr>
+  " nnoremap <F3> :grep -I <C-R><C-W> ./*<CR><esc>:cw<cr>
 endif
 
 " 弹出和隐藏quickfix 和locaiton list窗口
@@ -368,7 +375,7 @@ nmap <F7> :ALEGoToDefinition<cr>
 " github.com/rust-lang/rust.vim
 "===============================
 let g:rustfmt_autosave = 1    " 保存时自动格式化
-let g:rustfmt_fail_silently = 0  " 格式化失败时提示
+let g:rustfmt_fail_silently = 1  " 格式化失败时提示
 let g:rustfmt_command = 'rustfmt'   " 自定义格式化命令
 "
 " let g:rustfmt_options = '--edition 2024 --style-edition 2024'
